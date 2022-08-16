@@ -42,6 +42,15 @@ entity order_set_menu as "order_set_menu\n注文 - セットメニュー" {
   updated_at :datetime [更新日]
 }
 
+entity single_menu_set_menu_mapping as "single_menu_set_menu_mapping\n個別 - セットメニュー中間テーブル" {
+  *single_menu_set_menu_mapping_id :int [PK]
+  --
+  *set_menu_id :int [FK]
+  *single_menu_id :int [FK]
+  created_at :datetime [作成日]
+  updated_at :datetime [更新日]
+}
+
 entity order as "order\n注文" {
   *order_id :int [PK]
   --
@@ -54,19 +63,25 @@ entity order_detail as "order_detail\n注文詳細" {
   *order_detail_id :int [PK]
   --
   *order_id :int [FK]
+  consumption_tax :int [消費税]
+  tax_excluded_unit_cost :int [税抜き単価]
+  tax_included_unit_cost :int [税込み単価]
   number :int [注文数]
   add_wasabi :bool [さび入り]
+  size :tinyint [サイズ種別]
   type :tinyint [注文種別]
   created_at :datetime [作成日]
   updated_at :datetime [更新日]
 }
 
-note right: サイズ種別カラムを追加\n注文種別 Ex) 1:個別メニュー 2: セットメニュー
 
 order ||-d-|{ order_detail
 order_detail ||--o{ order_single_menu
 order_detail ||--o{ order_set_menu
 order_single_menu }o--|| single_menu
 order_set_menu }o--|| set_menu
+single_menu ||-r-o{ single_menu_set_menu_mapping
+set_menu ||-l-|{ single_menu_set_menu_mapping
+
 
 @enduml
