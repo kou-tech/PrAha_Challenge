@@ -45,6 +45,8 @@ entity order_set_menu as "order_set_menu\n注文 - セットメニュー" {
 entity order as "order\n注文" {
   *order_id :int [PK]
   --
+  tax_excluded_order_amount :int [税抜き注文金額]
+  tax_included_order_amount :int [税込み注文金額]
   status :int [注文状態]
   created_at :datetime [作成日]
   updated_at :datetime [更新日]
