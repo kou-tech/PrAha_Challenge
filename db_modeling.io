@@ -58,9 +58,9 @@ Table "セットすしメニュー" as set_single_menu {
 
 ref: user."ユーザーID" < order."ユーザーID"
 ref: order."注文ID" < order_detail."注文ID"
-ref: order_detail."注文詳細ID" < order_single_menu."注文詳細ID"
-ref: single_menu."お好みすしID" < order_single_menu."お好みすしID"
-ref: order_detail."注文詳細ID" < order_set_menu."注文詳細ID"
-ref: set_menu."セットメニューID" < order_set_menu."セットメニューID"
+ref: order_detail."注文詳細ID" - order_single_menu."注文詳細ID"
+ref: single_menu."お好みすしID" - order_single_menu."お好みすしID"
+ref: order_detail."注文詳細ID" - order_set_menu."注文詳細ID"
+ref: set_menu."セットメニューID" - order_set_menu."セットメニューID"
 ref: single_menu."お好みすしID" < set_single_menu."お好みすしID"
 ref: set_menu."セットメニューID" < set_single_menu."セットメニューID"
