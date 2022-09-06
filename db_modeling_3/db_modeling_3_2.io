@@ -30,6 +30,7 @@ Table "ディレクトリ関係" as directory_relation {
   "祖先ディレクトリID" int
   "子孫ディレクトリID" int
   "深さ" int
+  "ソート番号" int
 }
 
 ref: user."ユーザーID" < directory."ユーザーID"
