@@ -1,6 +1,6 @@
 # 課題1
 ## 回答
-![ER図](./db_modeling_4.png)
+![ER図](./db_modeling_4ver4.png)
 
 ## 説明
 時間単位種別は下記のケースで事足りると判断。
