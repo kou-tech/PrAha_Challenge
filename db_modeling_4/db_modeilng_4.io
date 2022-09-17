@@ -20,7 +20,7 @@ Table "リマインダースケジュール" as reminder_schedule {
   "リマインダーID" int [pk]
   "単位時間" int
   "時間単位種別" int
-  "初回送信日時" datetime
+  "最終送信予定日時" datetime
 }
 
 ref: user."ユーザーID" < reminder_user."ユーザーID"
