@@ -1,4 +1,5 @@
 ## 課題2
+[解答コード](https://github.com/Hikaru-Giannis/praha-challenge-templates/blob/feature/task/jestSample/__tests__/functions.test.ts)
 
 ## 課題3
 ### 解答3-1
@@ -22,18 +23,24 @@
 - 定義された条件に合わせて自動生成された膨大な値に対してテストを行う手法 (https://zenn.dev/ryo_kawamata/articles/22d4408bd1f138)
 
 ### 解答3-6
-- 実行速度をあげるために、Singleton Patternを採用。
-  - wip
-- 保守性をあげるために、Decorator patternsを採用。
-  - wip
-- Strategy patterns
-  - wip
+- Singleton Pattern。
+  - クラスのインスタンスをインスタンス化しようとするたびに同じインスタンスを返す。
+  - テストケース全体で1つのドライバーインスタンスを共有して利用することが可能。
+  - テスト データやその他のファイルを繰り返し読み込む必要がない。
+- Factory Design Pattern。
+  - 複数の子クラスを持つ親クラスが存在し、ある入力に基づいて特定のクラスを返す必要がある。
+  - ファクトリークラスから、インスタンス化を行う。
+  - 例として、iosとandroidでそれぞれテストする場合に、共通のドライバーオブジェクトを返す場合など
+  - https://qiita.com/shoheiyokoyama/items/d752834a6a2e208b90ca
+- Page Objectモデル
+  - アプリ内のページがクラスとして表現され、そのページのさまざまなUI要素が変数として定義できるため、コードの重複を減らせる。
 
 ## 課題4
+[問題](https://github.com/Hikaru-Giannis/praha-challenge-templates/blob/feature/task/jestSample/task.ts)
 
 
 ## 課題5
-prisma
+Prisma
 - https://github.com/prisma/prisma/tree/main/packages/client/tests
 
 1. テスト用のヘルパー関数を用意している。
