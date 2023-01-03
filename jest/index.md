@@ -19,10 +19,24 @@
 - 外部サービスのリクエスト数などの制限に引っかかる恐れがある。
 
 ### 解答3-5
-プロパティベースのテスト
-- 定義された条件に合わせて自動生成された膨大な値に対してテストを行う手法 (https://zenn.dev/ryo_kawamata/articles/22d4408bd1f138)
+[解答コミット](https://github.com/Hikaru-Giannis/praha-challenge-templates/commit/ee26bb3749d95de6db58d93f9f819d0802a46b72?diff=split)
 
 ### 解答3-6
+Property-based testing
+- 定義された条件に合わせて自動生成された膨大な値に対してテストを行う手法 (https://zenn.dev/ryo_kawamata/articles/22d4408bd1f138)
+- 有効な入力群に対する出力群が規定された性質を満たしていること。
+
+Example-based testing
+- 無数にある値から、ある基準によって入力値を選択し、その入力値による出力値と事後状態を比較する。
+
+メリット
+- テストコードを記述する時間が短縮される。
+- カバレッジが向上する。
+
+デメリット
+- 単体テストより低速である。
+
+### 解答3-7
 - Singleton Pattern。
   - クラスのインスタンスをインスタンス化しようとするたびに同じインスタンスを返す。
   - テストケース全体で1つのドライバーインスタンスを共有して利用することが可能。
@@ -38,6 +52,11 @@
 ## 課題4
 [問題](https://github.com/Hikaru-Giannis/praha-challenge-templates/blob/feature/task/jestSample/task.ts)
 
+### jestに関するクイズ
+等価判定メソッドである下記の違いについて、説明してください。
+- toBe
+- toEqual
+- toStrictEqual
 
 ## 課題5
 Prisma
