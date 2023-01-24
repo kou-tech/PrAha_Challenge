@@ -48,3 +48,26 @@ https://www.componentdriven.org/#benefits
 https://storybook.js.org/docs/react/writing-stories/args#args-composition
 </details>
 
+furunoさん解答
+
+Q1.
+.envファイルにSTORYBOOK_API_KEYなどとして、APIキーを定義する。
+https://storybook.js.org/docs/react/configure/environment-variabless
+
+Q2.
+storybook内で定義したglobal種別は、storybook環境でのみ読み込み可能にする必要があるため。
+
+Q3.
+Mock Service Workerを利用して、APIリクエストをモックする。
+https://storybook.js.org/addons/msw-storybook-addon
+
+kawamotoさん解答
+Q1.
+CSFとは、ES6モジュールに基づいてストーリーを作成する方法で、シンプルで読みやすく、どこでも使用できることを目的としている。
+
+Q2.
+main.jsには、Storybookサーバーの動作を制御する設定を記述する。
+preview.jsには、ストーリーのレンダリング方法を制御したり、グローバルデコレータやパラメータを追加したりする設定を記述する。
+
+Q3.
+decoratorとは、ストーリーを描画する際にそのストーリーをラップした上位コンポーネントのことである。データを渡したり、ちょっとしたスタイルを適用することが可能。
