@@ -64,10 +64,13 @@ https://storybook.js.org/addons/msw-storybook-addon
 kawamotoさん解答
 Q1.
 CSFとは、ES6モジュールに基づいてストーリーを作成する方法で、シンプルで読みやすく、どこでも使用できることを目的としている。
+https://storybook.js.org/blog/component-story-format/
 
 Q2.
 main.jsには、Storybookサーバーの動作を制御する設定を記述する。
 preview.jsには、ストーリーのレンダリング方法を制御したり、グローバルデコレータやパラメータを追加したりする設定を記述する。
+https://storybook.js.org/docs/react/configure/overview
 
 Q3.
 decoratorとは、ストーリーを描画する際にそのストーリーをラップした上位コンポーネントのことである。データを渡したり、ちょっとしたスタイルを適用することが可能。
+https://storybook.js.org/docs/react/writing-stories/decorators#component-decorators
