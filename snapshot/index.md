@@ -11,7 +11,9 @@ https://www.sitepen.com/blog/snapshot-testing-benefits-and-drawbacks
 ## 課題1-3 解答
 
 ## 課題2
+https://github.com/Hikaru-Giannis/my-app
 
+## 課題3
 - Jestのスナップショットテストでは、スナップショットをCIで自動生成するためには明示的にオプションを指定する必要があります。
 それはなぜでしょうか？
 <details>
@@ -24,3 +26,19 @@ https://github.com/facebook/jest/issues/9235
 
 
 
+## Furunoさんクイズ解答
+1. 非対称なMatcherを利用する。
+
+参考記事 : https://runebook.dev/ja/docs/jest/snapshot-testing?page=2
+````
+ expect(user).toMatchSnapshot({
+    createdAt: expect.any(Date),
+    id: expect.any(Number),
+ });
+````
+2. 任意の文字に置換(replace)し、固定する。
+3. 
+- toMatchSnapshot
+  - 結果がスナップショットファイルに書き込まれる。
+- toMatchInlineSnapshot
+  - 結果がソースコードに自動的に生成される。
