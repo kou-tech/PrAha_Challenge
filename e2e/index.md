@@ -1,4 +1,8 @@
 ## 課題1
+
+[リポジトリ](https://github.com/Hikaru-Giannis/my-app/commit/bdc7234d896cd90894a61135d16b32f4f264b4bd)
+
+引き分けのテストにおいて、現時点の私の実装では意味がない気がします。。。
 ## 課題2
 
 ### 課題2-1
@@ -32,6 +36,7 @@ https://kentcdodds.com/blog/static-vs-unit-vs-integration-vs-e2e-tests
 https://docs.cypress.io/guides/references/best-practices#Selecting-Elements
 
 ### 課題3
+[リポジトリ](https://github.com/Hikaru-Giannis/my-app/commit/bdc7234d896cd90894a61135d16b32f4f264b4bd)
 
 ### 課題4
 サードパーティー製のサーバー(ソーシャル認証など)を必要とする場合、E2Eテストはどのような対応をする必要があると思いますか？
