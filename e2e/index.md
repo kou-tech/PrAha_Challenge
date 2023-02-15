@@ -5,7 +5,6 @@
 メリット
 - エンドユーザー視点でテストをすることができる。
   - 単体テストや結合テストでは検出できないバグの発見に繋がる。
-- アプリケーション外に依存している箇所のテストも行うことができる。例) ソーシャル認証、外部決済サービスなど
 
 デメリット
 - 実行速度が遅い。
@@ -35,3 +34,11 @@ https://docs.cypress.io/guides/references/best-practices#Selecting-Elements
 ### 課題3
 
 ### 課題4
+サードパーティー製のサーバー(ソーシャル認証など)を必要とする場合、E2Eテストはどのような対応をする必要があると思いますか？
+
+<details>
+<summary>解答</summary>
+なるべく管理できるサーバーのみを対象にし、サードパーティ製のツールの動作確認はしない。
+ログインなど必須の場合は何度もリクエストせず、結果をキャッシュさせたりする必要がある。
+https://docs.cypress.io/guides/references/best-practices#Visiting-external-sites
+</details>
