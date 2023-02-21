@@ -47,3 +47,8 @@ https://docs.cypress.io/guides/references/best-practices#Selecting-Elements
 ログインなど必須の場合は何度もリクエストせず、結果をキャッシュさせたりする必要がある。
 https://docs.cypress.io/guides/references/best-practices#Visiting-external-sites
 </details>
+
+## furunoさんクイズ
+- 水平方向のe2eテストは、システム全体を横断して個々の機能が正しく動作するかをテストする。
+- 垂直方向のe2eテストは、ある特定の機能に焦点を当てて、テストする。
+- クリティカルな機能の動線や複雑な機能の場合が、テストの優先度が高くなるかと考えます。
