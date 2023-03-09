@@ -1,0 +1,25 @@
+@startuml
+
+Package Connection {
+
+  class USBPort {
+  --
+  }
+  
+  interface USBDeviceInterFace {
+
+  }
+}
+
+class USBKeyboard {
+  
+}
+class USBMouse {
+
+}
+
+USBPort -> USBDeviceInterFace
+USBKeyboard --> USBDeviceInterFace
+USBMouse --> USBDeviceInterFace
+
+@enduml

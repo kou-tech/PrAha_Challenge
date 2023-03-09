@@ -1,0 +1,25 @@
+@startuml
+
+class OrderOperation {
+--
++ settlement()
++ delivery()
++ aggregate()
++ updateInventory()
+}
+
+class Order {
+}
+
+class User {
+}
+
+class Admin {
+}
+
+OrderOperation -- "1" Order
+
+User --> OrderOperation
+Admin --> OrderOperation
+
+@enduml
