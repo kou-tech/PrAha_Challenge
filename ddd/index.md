@@ -57,6 +57,15 @@ DTO(Data Transfer Object)は異なる層やオブジェクトでデータを転�
 
 ## 課題2
 
+[ユースケース](https://github.com/Hikaru-Giannis/PrAha_Challenge/tree/main/ddd/UseCase)
+
+[エンティティ](https://github.com/Hikaru-Giannis/PrAha_Challenge/tree/main/ddd/Entity)
+
+[値オブジェクト](https://github.com/Hikaru-Giannis/PrAha_Challenge/tree/main/ddd/ValueObject)
+
+- TypeScriptにおいては、ValueObjectの値を参照する場合は、ゲッターではなく、public readonlyでも問題なさそう？
+- TypeScriptでは、コンストラクタの型定義でリテラル型を使った方が良いのか。または両方するべきか。
+
 ## 課題3
 ドメインロジックが漏れているコード (投稿システムを想定)
 
