@@ -101,5 +101,25 @@ if (!user1.isPremium && user1.posts.length >= 5) {
 
 [Good Code](./good_sample.ts)
 
+### 課題4
+解答に自信がないです...。他の方の意見をお聞きしてみたいです。
+
+- ドメインイベントについて、説明してください。
+<details>
+<summary>解答</summary>
+システム内で特定の状態変化が発生したときに生成され、それをパブリッシャが出版 (publish) し，サブスクライバがドメインイベントを購読 (subscribe) して何らかの処理を行う。
+</details>
+
+- ユーザー新規登録後に登録完了メールを送信する場合は、DDDではどのように実装することが想像されますか。
+<details>
+
+<summary>解答</summary>
+個人的解答
+<br>
+① ドメインイベントに`UserRegistered`を定義
+② ドメイン層にUserRegisteredEmailクラスを定義
+③ ドメイン層にEmailSenderインタフェースを定義
+④ インフラ層にEmailSenderの実装クラス
+</details>
 
 
