@@ -57,6 +57,14 @@ DTO(Data Transfer Object)は異なる層やオブジェクトでデータを転�
 
 ## 課題2
 
+### 2-1
+オンライン銀行システム
+
+口座管理のコンテキストにおけるお金は、口座の残高や利子に関連するドメインモデルやルールに焦点を当てることが想定される。
+その一方で、送金処理というコンテキストにおけるお金は、資金移動や送金手数料、通貨変換に関連するドメインモデルやルールに焦点を当てることが想定される。
+
+### 2-2
+
 [ユースケース](https://github.com/Hikaru-Giannis/PrAha_Challenge/tree/main/ddd/UseCase)
 
 [エンティティ](https://github.com/Hikaru-Giannis/PrAha_Challenge/tree/main/ddd/Entity)
