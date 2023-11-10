@@ -67,4 +67,99 @@ GROUP BY c.Country, Year
 ORDER BY Year DESC, TotalSale DESC;
 ````
 
+## 1-7
+````sql
+UPDATE Employees
+SET Junior = CASE
+WHEN BirthDate > '1960-01-01' THEN 'true'
+ELSE 'false';
+````
 
+## 1-8
+````sql
+SELECT Shippers.ShipperID, Shippers.ShipperName, COUNT(Orders.OrderID) AS NumberOfOrders
+FROM Shippers
+JOIN Orders ON Shippers.ShipperID = Orders.ShipperID
+GROUP BY Shippers.ShipperID
+HAVING COUNT(Orders.OrderID) >= 70;
+````
+
+````sql
+UPDATE Shippers
+SET long_relation = CASE
+WHEN 
+THEN 'true'
+ELSE 'false';
+````
+
+## 1-9
+wip
+
+## 1-10
+wip
+
+## 1-11
+
+## 2-1
+「WHERE」と「HAVING」は、GROUP BYした上で絞り込みを行う際に使用されるクエリである。
+違いとしては、WHEREはグループ化前にフィルタリングを行い、HAVINGはグループ化後にフィルタリングを行う。
+WHEREはグループ化前に条件に合致するレコードを抽出し、HAVINGはグループ化後に条件に合致するグループを抽出する。
+
+WHEREは単純な条件でのフィルタリングに使用し、HAVINGは集計関数を使用した条件でのフィルタリングに使用する。
+
+## 2-2
+- DDL (Data Definition Language)
+  - データベースの構造を定義するためのSQL文である。
+  - DDLには、CREATE、ALTER、DROPなどのコマンドが含まれる。
+
+- DML (Data Manipulation Language)
+  - データベース内のデータを操作するためのSQL文である。
+  - DMLには、SELECT、INSERT、UPDATE、DELETEなどのコマンドが含まれる。
+
+- DCL (Data Control Language)
+  - データベースのセキュリティを管理するためのSQL文である。
+  - DCLには、GRANT、REVOKEなどのコマンドが含まれる。
+
+- TCL (Transaction Control Language)
+  - トランザクションを管理するためのSQL文である。
+  - TCLには、COMMIT、ROLLBACK、SAVEPOINTなどのコマンドが含まれる。
+
+## 3
+
+データベースにおけるロールとは何でしょう？
+
+- a) データベースのテーブルを参照するためのビュー
+- b) データベースのテーブルに対する操作を定義したもの
+- c) ユーザーに対して一貫した権限を割り当てるためのもの
+- d) データベースのテーブルをグループ化するためのもの
+
+<details>
+<summary>解答</summary>
+c) ユーザーに対して一貫した権限を割り当てるためのもの
+</details>
+
+
+GRANTコマンドは何をするためのものでしょう？
+
+- a) ユーザーにデータベースへのアクセス権を付与する
+- b) データベースからデータを取得する
+- c) データベースのテーブルを作成する
+- d) データベースのテーブルを削除する
+
+<details>
+<summary>解答</summary>
+a) ユーザーにデータベースへのアクセス権を付与する
+</details>
+
+
+次のうち、ユーザーのデータベースへのアクセス権を取り消すためのコマンドはどれでしょう？
+
+- a) SELECT
+- b) INSERT
+- c) UPDATE
+- d) REVOKE
+
+<details>
+<summary>解答</summary>
+d) REVOKE
+</details>
