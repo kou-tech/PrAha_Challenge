@@ -93,12 +93,74 @@ ELSE 'false';
 ````
 
 ## 1-9
-wip
+````sql
+SELECT 
+    o.OrderID, 
+    o.EmployeeID, 
+    MAX(o.OrderDate) AS LatestOrderDate
+FROM 
+    Order o
+GROUP BY 
+    o.EmployeeID, o.OrderID
+ORDER BY 
+    o.EmployeeID, LatestOrderDate DESC;
+````
+
+````sql
+SELECT 
+    OrderID, 
+    EmployeeID, 
+    OrderDate
+FROM (
+    SELECT 
+        o.OrderID, 
+        o.EmployeeID, 
+        o.OrderDate,
+        ROW_NUMBER() OVER (PARTITION BY o.EmployeeID ORDER BY o.OrderDate DESC, o.OrderID DESC) as rn
+    FROM 
+        Order o
+) as sub
+WHERE 
+    sub.rn = 1;
+````
 
 ## 1-10
-wip
+````sql
+SELECT *
+FROM Customers
+WHERE CustomerName IS NOT NULL;
+````
+
+````sql
+SELECT *
+FROM Customers
+WHERE CustomerName IS NULL;
+````
+
+SQLにおけるNULLは、「存在しない不明な値」のため、他の値とは扱いが異なるため。
 
 ## 1-11
+
+````sql
+DELETE FROM Employees WHERE EmployeeId = 1;
+````
+
+Ordersにレコードがあるとエラーが発生するケースがある。
+
+````sql
+SELECT Orders.*
+FROM Orders
+LEFT JOIN Employees ON Orders.EmployeeId = Employees.EmployeeId
+WHERE Employees.EmployeeId IS NOT NULL;
+````
+
+````sql
+SELECT Orders.*
+FROM Orders
+LEFT JOIN Employees ON Orders.EmployeeId = Employees.EmployeeId
+WHERE Employees.EmployeeId IS NULL;
+````
+
 
 ## 2-1
 「WHERE」と「HAVING」は、GROUP BYした上で絞り込みを行う際に使用されるクエリである。
