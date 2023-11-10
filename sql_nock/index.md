@@ -88,8 +88,8 @@ HAVING COUNT(Orders.OrderID) >= 70;
 UPDATE Shippers
 SET long_relation = CASE
 WHEN 
-THEN 'true'
-ELSE 'false';
+THEN TRUE
+ELSE FALSE;
 ````
 
 ## 1-9
