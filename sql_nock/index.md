@@ -150,8 +150,7 @@ Ordersにレコードがあるとエラーが発生するケースがある。
 ````sql
 SELECT Orders.*
 FROM Orders
-LEFT JOIN Employees ON Orders.EmployeeId = Employees.EmployeeId
-WHERE Employees.EmployeeId IS NOT NULL;
+JOIN Employees ON Orders.EmployeeId = Employees.EmployeeId
 ````
 
 ````sql
