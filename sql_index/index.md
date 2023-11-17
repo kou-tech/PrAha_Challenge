@@ -45,3 +45,74 @@ SQL Serverでは付加列インデックスがあり、そちらはカバリン�
 
 UUIDのv6,v7,v8はタイムスタンプ情報を使ってソートできるらしい。
 まだドラフト段階？
+
+## 課題2
+
+### 課題2-1
+プロファイルで確認
+
+````sql
+SET profiling = 1;
+
+...
+
+SHOW PROFILES;
+````
+
+次の結果となった。
+````sql
+0.32121650 | SELECT * FROM employees WHERE last_name like "b%"
+````
+
+### 課題2-2
+
+````sql
+CREATE INDEX idx_last_name ON employees(last_name);
+````
+
+インデックス作成後の計測は以下の結果となった。
+
+````sql
+0.17591225 | SELECT * FROM employees WHERE last_name like "b%"
+````
+
+### 課題2-3
+
+````sql
++----------+------------+---------------------------------------------------+
+| Query_ID | Duration   | Query                                             |
++----------+------------+---------------------------------------------------+
+|        1 | 0.31345775 | SELECT * FROM employees WHERE last_name like "b%" |
+|        2 | 0.16448300 | SELECT * FROM employees WHERE last_name like "b%" |
+|        3 | 0.11866475 | SELECT * FROM employees WHERE last_name like "b%" |
+|        4 | 0.12041825 | SELECT * FROM employees WHERE last_name like "b%" |
+|        5 | 0.14454625 | SELECT * FROM employees WHERE last_name like "b%" |
++----------+------------+---------------------------------------------------+
+````
+
+
+A. バッファプールが効くようになったため。
+
+次のコマンドでストレージエンジンを確認。
+
+````sql
+SHOW CREATE TABLE employees;
+
+| employees | CREATE TABLE `employees` (
+  `emp_no` int(11) NOT NULL,
+  `birth_date` date NOT NULL,
+  `first_name` varchar(14) NOT NULL,
+  `last_name` varchar(16) NOT NULL,
+  `gender` enum('M','F') NOT NULL,
+  `hire_date` date NOT NULL,
+  PRIMARY KEY (`emp_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
+````
+
+InnoDBエンジンの場合、MySQLは「バッファプール」というメモリ領域を持つ。
+バッファプールは、データベースのデータやインデックスページをメモリ上にキャッシュする。
+そのため、後続のクエリはディスクからの読み込みが不要になり、処理が速くなる。
+
+参考URL
+- https://dev.mysql.com/doc/refman/8.0/ja/innodb-buffer-pool.html
+https://dev.mysql.com/doc/refman/8.0/ja/innodb-adaptive-hash.html
