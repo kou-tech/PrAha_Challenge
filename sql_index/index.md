@@ -176,14 +176,13 @@ titlesテーブル
 ````
 
 ## 回答
-115003 rows in set (11.36 sec)
+
+300024 rows in set (5.06 sec)
 
 ````sql
 SELECT
   e.emp_no,
-  e.first_name,
-  e.last_name,
-  s.salary,
+  CONCAT(e.first_name, ' ', e.last_name) as full_name,
   t.title
 FROM 
   employees e
@@ -192,23 +191,7 @@ JOIN
     emp_no, 
     MAX(from_date) as max_from_date 
    FROM 
-    salaries 
-   GROUP BY 
-    emp_no) as max_s
-ON 
-  e.emp_no = max_s.emp_no
-JOIN 
-  salaries s
-ON 
-  e.emp_no = s.emp_no AND max_s.max_from_date = s.from_date
-JOIN 
-  (SELECT 
-    emp_no, 
-    MAX(from_date) as max_from_date 
-   FROM 
     titles
-   WHERE 
-    title LIKE '%Engineer%'
    GROUP BY 
     emp_no) as max_t
 ON 
@@ -217,60 +200,19 @@ JOIN
   titles t
 ON 
   e.emp_no = t.emp_no AND max_t.max_from_date = t.from_date
-WHERE 
-  title LIKE '%Engineer%'
-ORDER BY 
-  s.salary DESC;
+ORDER BY
+  full_name
+DESC;
 ````
 
-各従業員の最新の給与の開始日を取得するサブクエリを作成し、その結果をemployeesテーブルと結合する
-````sql
-JOIN 
-  (SELECT 
-    emp_no, 
-    MAX(from_date) as max_from_date 
-   FROM 
-    salaries 
-   GROUP BY 
-    emp_no) as max_s
-ON 
-  e.emp_no = max_s.emp_no
-````
-
-salariesテーブルを結合し、各従業員の最新の給与を取得する
-````sql
-JOIN 
-  salaries s
-ON 
-  e.emp_no = s.emp_no AND max_s.max_from_date = s.from_date
-````
-
-職位がEngineerを含む各従業員の最新の職位の開始日を取得するサブクエリを作成し、その結果を既存の結果セットと結合する。
-````sql
-JOIN 
-  (SELECT 
-    emp_no, 
-    MAX(from_date) as max_from_date 
-   FROM 
-    titles
-   WHERE 
-    title LIKE '%Engineer%'
-   GROUP BY 
-    emp_no) as max_t
-ON 
-  e.emp_no = max_t.emp_no
-````
-
-titlesテーブルを結合し、各従業員の最新の職位を取得する。
-````sql
-JOIN 
-  titles t
-ON 
-  e.emp_no = t.emp_no AND max_t.max_from_date = t.from_date
-````
 
 ## 課題3-2
 
+300024 rows in set (2.54 sec)
+
+````sql
+CREATE INDEX idx_titles_emp_no_from_date ON titles(emp_no, from_date);
+````
 
 ## 課題4-1
 複合インデックスとは、複数のカラムに対して作成されるインデックスのことである。
