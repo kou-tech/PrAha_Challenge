@@ -1,0 +1,17 @@
++----+-------------+------------+------------+--------+---------------+---------+---------+--------------+--------+----------+---------------------------------+
+| id | select_type | table      | partitions | type   | possible_keys | key     | key_len | ref          | rows   | filtered | Extra                           |
++----+-------------+------------+------------+--------+---------------+---------+---------+--------------+--------+----------+---------------------------------+
+|  1 | PRIMARY     | <derived2> | NULL       | ALL    | NULL          | NULL    | NULL    | NULL         | 442367 |   100.00 | Using temporary; Using filesort |
+|  1 | PRIMARY     | t          | NULL       | ref    | PRIMARY       | PRIMARY | 4       | max_t.emp_no |      1 |    10.00 | Using where; Using index        |
+|  1 | PRIMARY     | e          | NULL       | eq_ref | PRIMARY       | PRIMARY | 4       | max_t.emp_no |      1 |   100.00 | NULL                            |
+|  2 | DERIVED     | titles     | NULL       | index  | PRIMARY       | PRIMARY | 59      | NULL         | 442367 |   100.00 | Using index                     |
++----+-------------+------------+------------+--------+---------------+---------+---------+--------------+--------+----------+---------------------------------+
+
++----+-------------+------------+------------+--------+-------------------------------------+-----------------------------+---------+----------------------------------+--------+----------+----------------------------------------------+
+| id | select_type | table      | partitions | type   | possible_keys                       | key                         | key_len | ref                              | rows   | filtered | Extra                                        |
++----+-------------+------------+------------+--------+-------------------------------------+-----------------------------+---------+----------------------------------+--------+----------+----------------------------------------------+
+|  1 | PRIMARY     | <derived2> | NULL       | ALL    | NULL                                | NULL                        | NULL    | NULL                             | 442367 |   100.00 | Using where; Using temporary; Using filesort |
+|  1 | PRIMARY     | e          | NULL       | eq_ref | PRIMARY                             | PRIMARY                     | 4       | max_t.emp_no                     |      1 |   100.00 | NULL                                         |
+|  1 | PRIMARY     | t          | NULL       | ref    | PRIMARY,idx_titles_emp_no_from_date | idx_titles_emp_no_from_date | 7       | max_t.emp_no,max_t.max_from_date |      1 |   100.00 | Using index                                  |
+|  2 | DERIVED     | titles     | NULL       | index  | PRIMARY,idx_titles_emp_no_from_date | idx_titles_emp_no_from_date | 7       | NULL                             | 442367 |   100.00 | Using index                                  |
++----+-------------+------------+------------+--------+-------------------------------------+-----------------------------+---------+----------------------------------+--------+----------+----------------------------------------------+

@@ -205,6 +205,7 @@ ORDER BY
 DESC;
 ````
 
+[exlainの比較](./explain2.txt)
 
 ## 課題3-2
 
