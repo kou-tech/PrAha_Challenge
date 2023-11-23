@@ -116,3 +116,174 @@ InnoDBエンジンの場合、MySQLは「バッファプール」というメモ
 参考URL
 - https://dev.mysql.com/doc/refman/8.0/ja/innodb-buffer-pool.html
 https://dev.mysql.com/doc/refman/8.0/ja/innodb-adaptive-hash.html
+
+## 課題3-1
+
+employeesテーブル
+
+````sql
+SHOW CREATE TABLE employees;
+
+| employees | CREATE TABLE `employees` (
+  `emp_no` int(11) NOT NULL,
+  `birth_date` date NOT NULL,
+  `first_name` varchar(14) NOT NULL,
+  `last_name` varchar(16) NOT NULL,
+  `gender` enum('M','F') NOT NULL,
+  `hire_date` date NOT NULL,
+  PRIMARY KEY (`emp_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
+````
+
+salariesテーブル
+
+````sql
+| salaries | CREATE TABLE `salaries` (
+  `emp_no` int(11) NOT NULL,
+  `salary` int(11) NOT NULL,
+  `from_date` date NOT NULL,
+  `to_date` date NOT NULL,
+  PRIMARY KEY (`emp_no`,`from_date`),
+  CONSTRAINT `salaries_ibfk_1` FOREIGN KEY (`emp_no`) REFERENCES `employees` (`emp_no`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
+````
+
+titlesテーブル
+
+````sql
+| titles | CREATE TABLE `titles` (
+  `emp_no` int(11) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `from_date` date NOT NULL,
+  `to_date` date DEFAULT NULL,
+  PRIMARY KEY (`emp_no`,`title`,`from_date`),
+  CONSTRAINT `titles_ibfk_1` FOREIGN KEY (`emp_no`) REFERENCES `employees` (`emp_no`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
+````
+
+````sql
++--------------------+
+| title              |
++--------------------+
+| Senior Engineer    |
+| Staff              |
+| Engineer           |
+| Senior Staff       |
+| Assistant Engineer |
+| Technique Leader   |
+| Manager            |
++--------------------+
+````
+
+## 回答
+115003 rows in set (11.36 sec)
+
+````sql
+SELECT
+  e.emp_no,
+  e.first_name,
+  e.last_name,
+  s.salary,
+  t.title
+FROM 
+  employees e
+JOIN 
+  (SELECT 
+    emp_no, 
+    MAX(from_date) as max_from_date 
+   FROM 
+    salaries 
+   GROUP BY 
+    emp_no) as max_s
+ON 
+  e.emp_no = max_s.emp_no
+JOIN 
+  salaries s
+ON 
+  e.emp_no = s.emp_no AND max_s.max_from_date = s.from_date
+JOIN 
+  (SELECT 
+    emp_no, 
+    MAX(from_date) as max_from_date 
+   FROM 
+    titles
+   WHERE 
+    title LIKE '%Engineer%'
+   GROUP BY 
+    emp_no) as max_t
+ON 
+  e.emp_no = max_t.emp_no
+JOIN 
+  titles t
+ON 
+  e.emp_no = t.emp_no AND max_t.max_from_date = t.from_date
+WHERE 
+  title LIKE '%Engineer%'
+ORDER BY 
+  s.salary DESC;
+````
+
+各従業員の最新の給与の開始日を取得するサブクエリを作成し、その結果をemployeesテーブルと結合する
+````sql
+JOIN 
+  (SELECT 
+    emp_no, 
+    MAX(from_date) as max_from_date 
+   FROM 
+    salaries 
+   GROUP BY 
+    emp_no) as max_s
+ON 
+  e.emp_no = max_s.emp_no
+````
+
+salariesテーブルを結合し、各従業員の最新の給与を取得する
+````sql
+JOIN 
+  salaries s
+ON 
+  e.emp_no = s.emp_no AND max_s.max_from_date = s.from_date
+````
+
+職位がEngineerを含む各従業員の最新の職位の開始日を取得するサブクエリを作成し、その結果を既存の結果セットと結合する。
+````sql
+JOIN 
+  (SELECT 
+    emp_no, 
+    MAX(from_date) as max_from_date 
+   FROM 
+    titles
+   WHERE 
+    title LIKE '%Engineer%'
+   GROUP BY 
+    emp_no) as max_t
+ON 
+  e.emp_no = max_t.emp_no
+````
+
+titlesテーブルを結合し、各従業員の最新の職位を取得する。
+````sql
+JOIN 
+  titles t
+ON 
+  e.emp_no = t.emp_no AND max_t.max_from_date = t.from_date
+````
+
+## 課題3-2
+
+
+## 課題4-1
+複合インデックスとは、複数のカラムに対して作成されるインデックスのことである。
+構造自体は単一インデックスとは変わらなく、組み合わせの順序が重要となる。
+
+例えば、(id, email)という組み合わせで複合インデックスを作成する場合は、まずidでデータが整理され、次にemailのデータで整理される。
+そのため、emailのみでwhere句に含める場合は効果的でないインデックスとなる。
+
+## 課題4-2
+複合インデックスは順番が重要であることから、姓だけの検索に利用されないからである。
+そのためインデックスを作成する場合は、姓だけの単一インデックスあるいは、(last_name, first_name)の組み合わせの複合インデックスの作成を検討する必要がある。
+
+インデックスコンディションプッシュダウン
+- テーブルスキャンよりはマシな時しか使わない。
+- 「必要のないカラム」を読むコストが大きい場合は、効果を発揮する。ファイルのバイナリ型が格納されているなど...。
+- テーブルスキャンの方が早くなることが多い
