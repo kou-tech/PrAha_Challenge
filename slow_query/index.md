@@ -95,3 +95,34 @@ Reading mysql slow query log from /var/lib/mysql/1873525e17ca-slow.log
 Count: 1  Time=2.61s (2s)  Lock=0.00s (0s)  Rows=2844047.0 (2844047), root[root]@localhost
   SELECT * FROM salaries
 ````
+
+### 課題4
+
+### 新人Bへの解答
+salariesテーブルの`emp_no`には外部キー制約があるとし、存在しない`emp_no`はない想定とすると、フィルタリングが行われるタイミング異なる。
+
+WHEREで条件を絞る場合、employeesテーブルにsalariesテーブルが結合されてから、WHERE句の条件を絞り込む。JOIN処理が重い場合、効率的ではない可能性がある。
+対象となるテーブルのレコード数は次の結果となるため、JOIN処理が重くなるレコード数ではあると考える。
+
+````txt
+employees → 300024
+salaries → 2844047
+````
+
+ONで条件を絞る場合、employeesテーブルからgender = "M"とbirth_date > "1960-01-01"の条件を満たす行が選択され、その後でsalariesテーブルと結合される。
+
+#### 外部結合での出力結果の違い
+
+##### LEFT OUTER JOINを使用し、WHEREで条件を絞る場合
+salariesテーブルに対応するレコードが存在しない場合に関しても、WHERE句の条件が適用される。
+
+##### LEFT OUTER JOINを使用し、ON句で条件を絞る場合
+e.gender = "M"とe.birth_date > "1960-01-01"の条件を満たすemployeesテーブルの行に対応するsalariesテーブルの行が存在する場合、そのsalariesテーブルのデータが結合される。これは、結合条件を満たすためである。
+
+e.gender = "M"とe.birth_date > "1960-01-01"の条件を満たすemployeesテーブルの行に対応するsalariesテーブルの行が存在しない場合、またはe.gender = "M"とe.birth_date > "1960-01-01"の条件を満たさないemployeesテーブルの行については、salariesテーブルの全ての列がNULLとなる。これは、結合条件を満たさないため、または対応するsalariesテーブルの行が存在しないためである。
+
+e.gender = "M"とe.birth_date > "1960-01-01"の条件を満たさないが、employeesテーブルの行に対応するsalariesテーブルの行が存在する場合、条件を満たさないレコードは取得される。これは、結合条件を満たさないためである。
+
+e.gender = "M"とe.birth_date > "1960-01-01"の条件を満たさず、employeesテーブルの行に対応するsalariesテーブルの行も存在しない場合、条件を満たさないレコードであっても取得される。これは、LEFT OUTER JOINの特性によるもので、左側のテーブルの行は常に結果に含まれる。
+
+[結果の比較](./result.txt)
