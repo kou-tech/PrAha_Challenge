@@ -161,3 +161,9 @@ salariesテーブルに対応するレコードが存在しない場合に関し
 <summary>解答</summary>
 含まれる
 </details>
+
+2. mysqldumpslowに単発の実行時間でクエリをソートする直接的なオプションはあるか？
+<details>
+<summary>解答</summary>
+ない。スロークエリログに記録されたクエリを総実行時間に基づいてソートするが、これはクエリが実行された回数（Count）も考慮に入れた時間である。
+</details>
