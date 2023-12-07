@@ -166,7 +166,7 @@ LIMIT 10;
 
 <details>
 <summary>解答</summary>
-含まれる
+初期ロックを取得する時間は実行時間として計算されない。
 </details>
 
 2. mysqldumpslowに単発の実行時間でクエリをソートする直接的なオプションはあるか？
