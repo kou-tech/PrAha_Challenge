@@ -240,4 +240,17 @@ COMMIT;
 
 
 ## 課題3
+MySQLにおいて、トランザクション内で新しいトランザクションを開始しようとする場合どうなるか。
 
+```sql
+START TRANSACTION;
+// 何かしらの更新
+START TRANSACTION;
+// さらに更新
+COMMIT;
+```
+
+<details>
+<summary>解答</summary>
+トランザクションの再開は単に無視され、最初のSTART TRANSACTIONから最後のCOMMITまでが単一のトランザクションとして扱われる。
+</details>
