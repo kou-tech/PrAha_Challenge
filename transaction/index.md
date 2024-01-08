@@ -24,7 +24,7 @@ sequenceDiagram
 ```
 
 ## 1-2
-正規化に伴う複雑化
+### 正規化に伴う複雑化
 当初は、取引情報を管理するテーブルのみが存在し、その際は同一テーブル内のカラムでお届け先情報も管理していた。
 しかし、配送連携サービスが増えたことで取引情報を管理するテーブルとお届け先情報を管理するテーブルで分割することになった。
 
@@ -59,6 +59,10 @@ transaction_id = 110
 参考にしたURL
 - https://engineering.mercari.com/blog/entry/2017-12-18-deadlock/
 
+### ギャップロック
+ギャップロックは、特定のレコード間の「ギャップ」、つまり連続するインデックス値の間の空間に適用されるロックである。これは、レコード自体ではなく、レコード間の空間をロックすることを意味する。
+
+- https://qiita.com/kenjiszk/items/05f7f6e695b93570a9e1
 
 ## 1-3
 READ UNCOMMITED
@@ -124,3 +128,82 @@ phantom read
 
 参考にしたURL
 - https://techracho.bpsinc.jp/kotetsu75/2018_12_14/66410
+
+# 課題2
+## 課題2-1
+## 課題2-2
+- 余程でない限り多重予約がないとあるので、データの競合が比較的少ないと予想される状況で有効である楽観ロックを採用する。
+
+シート情報を管理するテーブルにバージョンカラムを追加し、更新する前にバージョン比較をすることで、他のトランザクションによってレコードが更新されていないかを行う。
+
+```php
+<?php
+
+
+function updateSeat(Seat $seat) {
+    // データベース接続を取得
+    $db = getDatabaseConnection();
+
+    // トランザクションを開始
+    $db->beginTransaction();
+
+    try {
+        // 最新の席情報を取得し、バージョン番号を確認
+        $stmt = $db->prepare("SELECT version FROM seats WHERE id = :id");
+        $stmt->execute(['id' => $seat->id]);
+        $row = $stmt->fetch();
+
+        if ($row && $row['version'] === $seat->version) {
+            // バージョンが一致した場合、更新を実行
+            $seat->version++; // バージョンをインクリメント
+            $updateStmt = $db->prepare("UPDATE seats SET /* その他の更新内容 */, version = :version WHERE id = :id AND version = :original_version");
+            $updateStmt->execute(['id' => $seat->id, 'version' => $seat->version, 'original_version' => $seat->version - 1]);
+
+            // トランザクションをコミット
+            $db->commit();
+        } else {
+            // バージョンが一致しない場合、競合が発生している
+            $db->rollBack();
+            throw new Exception("競合が発生しました。更新できません。");
+        }
+    } catch (Exception $e) {
+        // エラーが発生した場合、トランザクションをロールバック
+        $db->rollBack();
+        throw $e;
+    }
+}
+```
+
+## food for thought
+自分達が管理しているDBへの永続化から先に行うのが良いと考える。
+理由としては、自社のデータベースには完全な制御権があり、トランザクションをより細かく制御できる。これにより、問題が発生した場合のロールバックが容易になる。また、外部APIへのリクエストは、ネットワークの問題やサードパーティのサービスの可用性の問題など、不確実性を含むことが多い。内部的なプロセスを完了してから外部APIを呼び出すことで、これらの不確実性に対処しやすくなるためである。
+
+## 課題2-3
+### 1
+トランザクションが開始された際に、対象のテーブルにロックをかけ、、他のトランザクションがそのテーブルにアクセスするのを防ぐ。ただし、そのテーブルに対する他のすべての操作がブロックされ、システムのスループットが大幅に低下する可能性がある。
+
+### 2
+Parentに該当するレコードに対して、行レベルのロックをかけChildの数をチェックしてから新しいChildを挿入する。
+
+```sql
+-- トランザクション開始
+START TRANSACTION;
+
+-- 対象のparentレコードに行レベルのロックを取得
+SELECT * FROM parents WHERE parent_id = 1 FOR UPDATE;
+
+-- childレコードの数を確認
+SELECT COUNT(*) FROM children WHERE parent_id = 1;
+
+-- ここでプログラム側で子レコードの数が5未満であることを確認
+
+-- 新しいchildを挿入（子レコードの数が5未満の場合）
+INSERT INTO children (child_id, parent_id, name) VALUES (新しいchild_id, 1, '新しいchildの名前');
+
+-- トランザクションをコミット
+COMMIT;
+```
+
+
+## 課題3
+
