@@ -131,6 +131,40 @@ phantom read
 
 # 課題2
 ## 課題2-1
+
+### Dirty Read
+
+### 1
+```sql
+-- トランザクション1
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+START TRANSACTION;
+UPDATE employees SET first_name='Michael' WHERE emp_no = 10001;
+
+```
+
+```sql
+-- トランザクション2
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+SELECT * FROM employees WHERE emp_no = 10001;
+-- Michaelで取得される
+```
+
+### 2
+
+```sql
+-- トランザクション1
+ROLLBACK;
+```
+
+```sql
+-- トランザクション2
+SELECT * FROM employees WHERE emp_no = 10001;
+-- Georgiで取得される
+```
+
 ## 課題2-2
 - 余程でない限り多重予約がないとあるので、データの競合が比較的少ないと予想される状況で有効である楽観ロックを採用する。
 
