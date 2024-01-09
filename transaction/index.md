@@ -305,13 +305,21 @@ MySQLにおいて、トランザクション内で新しいトランザクショ
 
 ```sql
 START TRANSACTION;
-// 何かしらの更新
+UPDATE employees SET first_name='TEST1' WHERE emp_no = 10001;
 START TRANSACTION;
-// さらに更新
+UPDATE employees SET first_name='TEST2' WHERE emp_no = 10001;
 COMMIT;
 ```
 
 <details>
 <summary>解答</summary>
-トランザクションの再開は単に無視され、最初のSTART TRANSACTIONから最後のCOMMITまでが単一のトランザクションとして扱われる。
+START TRANSACTION;
+<br>
+UPDATE employees SET first_name='TEST1' WHERE emp_no = 10001;
+<br>
+START TRANSACTION; // この時点でTEST1になる
+<br>
+UPDATE employees SET first_name='TEST2' WHERE emp_no = 10001;
+<br>
+COMMIT; // この時点でTEST2になる
 </details>
