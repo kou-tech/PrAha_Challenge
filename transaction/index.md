@@ -149,7 +149,7 @@ UPDATE employees SET first_name='Michael' WHERE emp_no = 10001;
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT * FROM employees WHERE emp_no = 10001;
--- Michaelで取得される
+-- Michael
 ```
 
 ### 2
@@ -162,7 +162,37 @@ ROLLBACK;
 ```sql
 -- トランザクション2
 SELECT * FROM employees WHERE emp_no = 10001;
--- Georgiで取得される
+-- Georgi
+```
+
+### Non-repetable Read
+
+### 1
+```sql
+-- トランザクション1
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+START TRANSACTION;
+
+SELECT * FROM employees WHERE emp_no = 10001;
+-- Georgi
+```
+
+```sql
+-- トランザクション2
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+START TRANSACTION;
+
+UPDATE employees SET first_name='Mike' WHERE emp_no = 10001;
+COMMIT;
+```
+
+### 2
+```sql
+-- トランザクション1
+SELECT * FROM employees WHERE emp_no = 10001;
+-- Mike
+COMMIT;
 ```
 
 ## 課題2-2
