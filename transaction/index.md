@@ -165,7 +165,7 @@ SELECT * FROM employees WHERE emp_no = 10001;
 -- Georgi
 ```
 
-### Non-repetable Read
+### Non-repetable read
 
 ### 1
 ```sql
@@ -193,6 +193,35 @@ COMMIT;
 SELECT * FROM employees WHERE emp_no = 10001;
 -- Mike
 COMMIT;
+```
+
+### Phantom read
+
+### 1
+```sql
+-- トランザクション1
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+
+SELECT COUNT(*) FROM employees;
+-- 300024
+```
+
+```sql
+-- トランザクション2
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+
+INSERT INTO employees (emp_no,birth_date,first_name,last_name,gender,hire_date) VALUES ('500000', '1972-05-01', 'New', 'User', 'M', '1997-11-30');
+COMMIT;
+```
+
+### 2
+```sql
+-- トランザクション1
+SELECT COUNT(*) FROM employees;
+COMMIT;
+-- 300024のまま
 ```
 
 ## 課題2-2
