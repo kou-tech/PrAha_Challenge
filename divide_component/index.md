@@ -84,3 +84,17 @@ export default FunctionComponent;
 これにより、他の要素との間に予期しない空間が生じたり、要素が重なったりする可能性がある。
 また、レスポンシブデザインにおいても、絶対位置指定は柔軟性を損なう可能性がある。
 そのため、可能な限りフレックスボックスやグリッドなどのレイアウト技術を使用する。
+
+## 課題3
+
+```txt
+sample
+├── componets
+├── features
+│   └── news
+│       ├── components
+│       ├── hooks
+│       └── types
+├── pages
+└── types
+```
