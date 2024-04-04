@@ -45,3 +45,45 @@ console.log("tempoPerformance: ", tempoPerformance);
 console.log("dateFnsPerformance: ", dateFnsPerformance);
 console.log("luxonPerformance: ", luxonPerformance);
 ```
+
+## 課題2
+```tsx
+export function Profiler({ Component, onFinishMeasure }) {
+  // 現時点では渡されたComponentを1000回レンダリングしているだけです。
+  // useRef, useState, useEffectを活用して、
+  // 1000回レンダリングが終了するまでに要した時間をonFinishMeasureに返せるようにしましょう
+
+  // パフォーマンス測定の状態を管理
+  const [state, setState] = useState(false);
+
+  // 経過時間はuseRefに格納
+  const elapsedTime = useRef(undefined);
+
+  const children = [];
+
+  useEffect(() => {
+    if (state) {
+      const start = performance.now();
+      // 1000回レンダリング
+      for (let i = 0; i < 1000; i++) {
+        children.push(<Component key={i} />);
+      }
+      const end = performance.now();
+      elapsedTime.current = end - start;
+      onFinishMeasure();
+    }
+  }, [state]);
+
+  return (
+    <>
+      <button onClick={() => setState(true)}>measure</button>
+      {state && (
+        <div>
+          {elapsedTime.current ? `${elapsedTime.current}ms` : "レンダリング中"}
+        </div>
+      )}
+      {children}
+    </>
+  );
+}
+```
