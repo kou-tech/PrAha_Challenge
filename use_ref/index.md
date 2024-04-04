@@ -95,3 +95,9 @@ export function Profiler({ Component, onFinishMeasure }) {
   - ユーザーがページをスクロールして特定の位置に到達した際に、遅延読み込みやアニメーションを実行するなどの処理を行ったりするのに利用できる。
 - アナリティクスやトラッキング
   - ユーザーの行動を分析するために、ページの読み込みやクリックなどのイベントを監視し、データを収集するのに利用できる。
+
+## 任意課題
+- [詳細記事](https://gist.github.com/bvaughn/8de925562903afd2e7a12554adcdda16)
+- [React Developer Tools](https://ja.react.dev/learn/react-developer-tools)によって、Profilerコンポーネントを使用してアプリケーションのパフォーマンスを測定することができるから。
+- [Profiler](https://ja.react.dev/reference/react/Profiler)
+  - 使用するたびにアプリケーションに一定の CPU とメモリのオーバーヘッドが生じる。
