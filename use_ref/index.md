@@ -44,6 +44,11 @@ console.log("dayjsPerformance: ", dayjsPerformance);
 console.log("tempoPerformance: ", tempoPerformance);
 console.log("dateFnsPerformance: ", dateFnsPerformance);
 console.log("luxonPerformance: ", luxonPerformance);
+
+// dayjsPerformance:  1.7890840005129576
+// tempoPerformance:  20.82204100023955
+// dateFnsPerformance:  0.36958300042897463
+// luxonPerformance:  0.3265420002862811
 ```
 
 ## 課題2
