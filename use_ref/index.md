@@ -53,44 +53,45 @@ console.log("luxonPerformance: ", luxonPerformance);
 
 ## 課題2
 ```tsx
+import React, { useState, useEffect, useRef } from "react";
+
 export function Profiler({ Component, onFinishMeasure }) {
-  // 現時点では渡されたComponentを1000回レンダリングしているだけです。
-  // useRef, useState, useEffectを活用して、
-  // 1000回レンダリングが終了するまでに要した時間をonFinishMeasureに返せるようにしましょう
+  const [isMeasuring, setIsMeasuring] = useState(false);
+  const [count, setCount] = useState(0);
+  const startTime = useRef(0);
 
-  // パフォーマンス測定の状態を管理
-  const [state, setState] = useState(false);
-
-  // 経過時間はuseRefに格納
-  const elapsedTime = useRef(undefined);
-
-  const children = [];
-
-  useEffect(() => {
-    if (state) {
-      const start = performance.now();
-      // 1000回レンダリング
-      for (let i = 0; i < 1000; i++) {
-        children.push(<Component key={i} />);
-      }
-      const end = performance.now();
-      elapsedTime.current = end - start;
-      onFinishMeasure();
+  const handleRender = () => {
+    if (count === 0) {
+      startTime.current = performance.now();
     }
-  }, [state]);
+    if (count < 1000) {
+      setCount((prevCount) => prevCount + 1);
+    } else if (count === 1000) {
+      onFinishMeasure(performance.now() - startTime.current);
+    }
+  };
+
+  // 1000回のレンダリングをトリガー
+  const children = Array.from({ length: 1000 }, (_, i) => (
+    <React.Profiler key={i} id={`Component-${i}`} onRender={handleRender}>
+      <Component />
+    </React.Profiler>
+  ));
 
   return (
     <>
-      <button onClick={() => setState(true)}>measure</button>
-      {state && (
-        <div>
-          {elapsedTime.current ? `${elapsedTime.current}ms` : "レンダリング中"}
-        </div>
-      )}
-      {children}
+      <button
+        onClick={() => {
+          setIsMeasuring(true);
+        }}
+      >
+        Measure
+      </button>
+      {isMeasuring && children}
     </>
   );
 }
+
 ```
 
 ## 課題3
