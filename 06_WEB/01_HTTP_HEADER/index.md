@@ -61,6 +61,27 @@ Referer: https://example.com/
 - [Referrer-Policy](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Referrer-Policy)
 - [origin-when-cross-origin](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Referrer-Policy#origin-when-cross-origin)
 
+## 課題2
+
+<details>
+<summary>Q: `Cache-Control`ヘッダーに `no-store` と `no-cache` の両方が設定されている場合、どのような挙動になるか？</summary>
+A: `no-store` が優先される。`no-store` は全てのキャッシュを禁止する。一方、`no-cache` はキャッシュ自体は許可するが、キャッシュされたコンテンツを使用する前にオリジンサーバーでの検証を必要とする。しかし、`no-store` が設定されている場合、全てのキャッシュが禁止されるため、`no-cache` の効果は無視される。
+</details>
+
+---
+
+<details>
+<summary>Q: `Connection` ヘッダーや `Keep-Alive` ヘッダーは、HTTP/2 では禁止されているがなぜか？</summary>
+A: HTTP/2 は、接続の再利用とマルチプレクシングが基本的にサポートされているため、`Connection`や`Keep-Alive`などの接続固有のヘッダーフィールドは不要となり、禁止されている。これらのヘッダーはHTTP/1.xで接続の維持と再利用を制御するために使用されていたが、HTTP/2ではこれらの機能がデフォルトで有効になっているためである。マルチプレクシングとは、一つのTCP接続で複数のリクエストとレスポンスを同時に送受信できる機能であり、これにより、リクエストの待ち時間を減らし、サーバーのリソースを効率的に利用できる。
+</details>
+
+- [How HTTP/2 reduces Server CPU and Bandwidth](https://darkdrag0nite.medium.com/how-http-2-reduces-server-cpu-and-bandwidth-10dbb8458feb)
+---
+<details>
+<summary>Q: `ETag` ヘッダーと `Last-Modified` ヘッダーはどちらもキャッシュの検証に使用されるが、それぞれの違いは何か？</summary>
+A: `ETag` ヘッダーは、リソースの特定のバージョンを一意に識別するための識別子を提供する。リソースが変更されると、`ETag` ヘッダーの値も変わる。これにより、ブラウザはキャッシュされたコンテンツが最新版であるかどうかを確認できる。一方、`Last-Modified` ヘッダーは、リソースが最後に変更された日時を示す。しかし、秒単位までしか精度がないため、同じ秒内にリソースが変更された場合、変更を検知できない可能性がある。また、`Last-Modified` ヘッダーは、リソースの内容が変更されていなくても、日時が変わることがあるため、正確な検証が難しい場合がある。したがって、より高い精度と柔軟性を求める場合は `ETag` ヘッダーを使用し、単純な日時ベースの検証で十分な場合は `Last-Modified` ヘッダーを使用する。
+</details>
+
 ## 課題3-1
 
 - フォロー関係は履歴や記録を残す必要がないため、DELETEを使う。
