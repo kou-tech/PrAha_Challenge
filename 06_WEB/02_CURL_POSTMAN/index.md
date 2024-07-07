@@ -31,7 +31,7 @@ curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'name=hoge'
 ```
 
 ## 課題5
-Q1. curlコマンドを利用して、HTTP Requestのレスポンスボディを取得してください。
+Q1. curlコマンドを利用して、HTTP Requestのレスポンスタイムを取得してください。
 
 A1.
 
@@ -60,10 +60,13 @@ curl -sS -o output.txt -f <URL> 2> error.txt
 ```
 
 ※ `-f`オプションは、エラーが発生した場合にエラーを出力するオプション
+
 ※ `-sS` オプションは、進捗状況は表示しないが、エラーメッセージは表示するオプション
 
 Q4. Postmanはデータをどこでホストしているか？
+
 A4. AWS上にホストされている
 
 Q5. Postmanでパスパラメータを動的に設定する方法を説明してください。
+
 A5. https://reqres.in/api/users/:id のように、パスパラメータを設定することができる
