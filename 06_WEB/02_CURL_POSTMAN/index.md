@@ -31,3 +31,33 @@ curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'name=hoge'
 ```
 
 ## 課題5
+Q1. curlコマンドを利用して、HTTP Requestのレスポンスボディを取得してください。
+
+A1.
+
+```bash
+curl -w "%{time_total}\n" -o /dev/null -s <URL>
+```
+
+Q2. curlコマンドを利用して、HTTP Requestのレスポンスボディをファイルに保存してください。
+
+A2.
+
+```bash
+curl -o <ファイル名> <URL>
+```
+
+```bash
+curl <URL> > output.txt
+```
+
+Q3. curlコマンドを利用して、HTTP Requestのレスポンスボディを取得し、エラーメッセージをファイルに保存してください。
+
+A3.
+
+```bash
+curl -sS -o output.txt -f <URL> 2> error.txt
+```
+
+※ `-f`オプションは、エラーが発生した場合にエラーを出力するオプション
+※ `-sS` オプションは、進捗状況は表示しないが、エラーメッセージは表示するオプション
