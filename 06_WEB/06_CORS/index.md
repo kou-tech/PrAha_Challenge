@@ -31,6 +31,9 @@ CORS (Cross-Origin Resource Sharing)は、クライアントとサーバー間�
     - データのストリームを読み取るために使用される
 
 ## 課題1-4
+ブラウザはレスポンスをブロックし、JavaScriptでのアクセスを禁止する。
+
+リクエストは正常に処理されますが、ブラウザはレスポンスをアプリケーションに渡さず、CORSエラーを発生させ、JavaScriptで操作できなくする。
 
 ## 課題1-5
 aタグを使用したリンク遷移は、リソースの取得ではなくブラウザによる`webNavigation` APIを使用して遷移するため、CORSの制約を受けない。
@@ -39,4 +42,37 @@ aタグを使用したリンク遷移は、リソースの取得ではなくブ�
 `XMLHttpRequest`または`Fetch API`を使用する際に、`withCredentials`オプションをtrueに設定する必要がある。これにより、リクエストにクッキーが含まれる。
 
 ## 課題2
+
+## 課題3
+
+## 課題4
+CURLで「Simple Request」に該当しないリクエストを送信した結果、CORS制約は発生しない。
+CORSはブラウザがクライアント側でセキュリティを確保するための仕組みであり、サーバー間の通信やコマンドラインツール（例えばCURL）を使った通信には適用されない。
+
+```txt
+curl -v 'http://localhost:3002/api' \
+        -X 'POST' \
+        -H 'Content-Type: application/json'
+*   Trying [::1]:3002...
+* Connected to localhost (::1) port 3002
+> POST /api HTTP/1.1
+> Host: localhost:3002
+> User-Agent: curl/8.4.0
+> Accept: */*
+> Content-Type: application/json
+>
+< HTTP/1.1 200 OK
+< X-Powered-By: Express
+< Access-Control-Allow-Origin: http://localhost:3001
+< Vary: Origin
+< Content-Type: application/json; charset=utf-8
+< Content-Length: 42
+< ETag: W/"2a-2C4plaP4B7TKOzI3aA/JbPgz6G8"
+< Date: Sun, 04 Aug 2024 14:22:41 GMT
+< Connection: keep-alive
+< Keep-Alive: timeout=5
+<
+* Connection #0 to host localhost left intact
+{"message":"POST request to the homepage"}%
+```
 

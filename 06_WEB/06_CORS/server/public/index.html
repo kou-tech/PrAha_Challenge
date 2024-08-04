@@ -6,18 +6,36 @@
   <title>Cookie Test</title>
 </head>
 <body>
-  <script>
-    fetch('https://65cd-240b-13-8560-cb00-35c7-c423-ac2c-e2de.ngrok-free.app/api', {
-      method: 'GET',
-      credentials: 'include'
-    })
-  </script>
-  <script>
-    fetch('https://65cd-240b-13-8560-cb00-35c7-c423-ac2c-e2de.ngrok-free.app/api', {
-      method: 'POST',
-      credentials: 'include'
-    })
-  </script>
   <h1>CORSテスト</h1>
+  <button id="btn1">Pre-flightが発生する</button>
+  <script>
+    const button1 = document.getElementById('btn1');
+    button1.addEventListener('click', () => {
+        fetch('http://localhost:3002/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
+    });
+  </script>
+  <button id="btn2">Pre-flightが発生しない</button>
+  <script>
+    const button2 = document.getElementById('btn2');
+    button2.addEventListener('click', () => {
+        fetch('http://localhost:3002/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain',
+            }
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
+    });
+  </script>
 </body>
 </html>
